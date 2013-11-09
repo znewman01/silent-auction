@@ -11,7 +11,37 @@ def register(server, user, auction_id):
     json = requests.post(url, data=payload).json()
     return pickle.loads(json['server_key']), json['bidder_id']
 
-def bid(server, user, auction_id, server_key):
+def bitcoin(public, private, address, amount):
+     coins_from = []
+     coins_sources = blockchain_info.coin_sources_for_address(public)
+     coins_from.extend(coins_sources)
+     value = sum(cs[-1].coin_value for cs in coins_sources)
+
+     secret_exponents = [encoding.wif_to_secret_exponent(private[:-1])]
+
+     amount = btc_to_satoshi(amount)
+     coins_to = [(amount, address)]
+     actual_tx_fee = value - amount
+     if actual_tx_fee < 0:
+         print("not enough source coins (%s BTC) for destination (%s BTC). Short %s BTC" %   (satoshi_to_btc(total_value), satoshi_to_btc(total_spent), satoshi_to_btc(-actual_tx_fee)))
+         return None;
+
+     if actual_tx_fee > 0:
+        coins_to.append((actual_tx_fee, public))
+
+     print("transaction fee: %s BTC" % satoshi_to_btc(actual_tx_fee))
+     unsigned_tx = UnsignedTx.standard_tx(coins_from, coins_to)
+     solver = SecretExponentSolver(secret_exponents)
+     new_tx = unsigned_tx.sign(solver)
+     s = io.BytesIO()
+     new_tx.stream(s)
+     tx_bytes = s.getvalue()
+     tx_hex = binascii.hexlify(tx_bytes).decode("utf8")
+     recommended_tx_fee = tx_fee.recommended_fee_for_tx(new_tx)
+
+     return tx_hex
+
+def bid(server, user, auction_id, server_key, btc_public, btc_private):
     raw_input('Hit enter when your bidder ID is displayed.')
     bid_url = 'http://{}/auctions/{}/bid'.format(server, auction_id)
     r = requests.get(bid_url)
@@ -21,15 +51,18 @@ def bid(server, user, auction_id, server_key):
     seller_address = json['seller_address']
     print('Available bid values: {}'.format(bid_values))
     bid = int(raw_input('What is your bid? '))
+
+    btc = bitcoin(btc_public, btc_private, seller_address, bid/1000);
+    if btc is None:
+        return
+
     blob = pickle.loads(json['blob'])
     if next_bidder_key is not None:
         blob = user.bid(blob, bid, bid_values, server_key,
-                pickle.loads(next_bidder_key), seller_address)
+                pickle.loads(next_bidder_key), seller_address, btc)
     else:
-        blob = user.final_bid(blob, bid, bid_values, server_key, seller_address)
+        blob = user.final_bid(blob, bid, bid_values, server_key, seller_address, btc)
     print(requests.post(bid_url, data={'blob': pickle.dumps(blob)}).text)
-
-
 
 def main():
     parser = argparse.ArgumentParser(description='Place a SilentAuction bid')
@@ -40,6 +73,12 @@ def main():
     user = User(key=pickle.load(open(args.keyfile)))
     if not args.keyfile:
         user.gen_key(4096)
+    bitcoin_address = raw_input('What Bitcoin address?')
+    bitcoin_wif = raw_input('What Bitcoin wif?');
+
+    server = 'localhost:5000'
+    if len(sys.argv) == 2:
+        server = sys.argv[1]
 
     auction_id = raw_input('What auction id? ')
 
@@ -47,7 +86,7 @@ def main():
 
     print('Your bidder ID: {}'.format(bidder_id))
 
-    bid(args.server, user, auction_id, server_key)
+    bid(args.server, user, auction_id, server_key, bitcoin_address, bitcoin_wif)
 
 if __name__ == '__main__':
     main()
