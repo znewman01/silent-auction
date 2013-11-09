@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %} {{ auction.name }} {% endblock %}
+{% block head %}
+        h1 {
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .span12 {
+            text-align: center;
+        }
+        h4 {
+            text-align: center;
+            color: red;
+        }
+        span10 {
+            text-align: left;
+        }
+        pre {
+            text-align: left;
+        }
+{% endblock %}
+{% block content %}
+        <div class="container">
+            <h1>{{ auction.name }}</h1>
+            <div class="row show-grid">
+                <div class="span12">
+                    Auction #{{ auction.auction_id }}
+                    <br><br>
+                    {% if auction.current_bid %}
+                    <h4>Status: waiting on bidder #{{ auction.current_bid }}</h4>
+                    {% else %}
+                    <h4>This auction has not yet begun.</h4>
+                    {% endif %}
+                    <br>
+                    {% if auction.picture_filename %}
+                    <img src="/user_images/{{ auction.picture_filename }}">
+                    {% endif %}
+                    <br>
+                    {{ auction.description }}
+                    <br><br>
+                </div>
+                <div class="span offset2">
+                    To register for this auction:
+                    <pre>
+$ python cli.py --server [server hostname] --keyfile [pregenerated ElGamal key]
+What Bitcoin address? [public Bitcoin address you're paying from]
+What Bitcoin wif? [private Bitcoin key associated with that address]
+What auction id? {{ auction.auction_id }}
+...</pre>
+                </div>
+            </div>
+        </div>
+{% endblock %}
