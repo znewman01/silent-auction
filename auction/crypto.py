@@ -35,7 +35,7 @@ class User():
     def export_key(self):
         return self.key.publickey()
 
-    def bid(self, blob, value, bid_list, server_key, next_bidder_key, seller_address):
+    def bid(self, blob, value, bid_list, server_key, next_bidder_key, transaction):
         def make_garbage(chunks):
             for chunk in chunks:
                 garbage = random.StrongRandom().randint(1, server_key.p-1)
@@ -56,7 +56,7 @@ class User():
             if bid_list[i] < value:
                 chunks = list(make_garbage(chunks))
             elif bid_list[i] == value:
-                chunks = list(place_bid(chunks, value))
+                chunks = list(place_bid(chunks, transaction))
             else:
                 chunks = list(pass_through(chunks))
             ret.append(chunks)
