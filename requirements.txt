@@ -11,5 +11,6 @@ itsdangerous==0.23
 mongoengine==0.8.4
 pycrypto==2.6.1
 pymongo==2.6.3
+requests==2.0.1
 wsgiref==0.1.2
 pycoin==0.23

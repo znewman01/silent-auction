@@ -1,6 +1,9 @@
-from flask import Blueprint, request, redirect, render_template, url_for
+import json
+import pickle
+
+from flask import Blueprint, request, redirect, render_template, url_for, g
 from flask.views import MethodView
-from auction.models import Auction
+from auction.models import Auction, get_crypto_server
 
 auctions = Blueprint('auctions', __name__, template_folder='templates')
 
@@ -19,12 +22,20 @@ class DetailView(MethodView):
 class RegisterView(MethodView):
 
     def post(self, auction_id):
+        print(auction_id)
         key = request.form['public_key']
         auction = Auction.objects(auction_id=auction_id).first()
         auction.bidder_public_keys.append(key)
         auction.save()
-        bidder_number = str(len(auction.bidder_public_keys))
-        return render_template('register.html', auction=auction)
+        bidder_id = len(auction.bidder_public_keys)
+        server = get_crypto_server()
+        server_key = pickle.dumps(server.export_key())
+        payload = {
+                'server_key': server_key,
+                'bidder_id': bidder_id
+            }
+        return json.dumps(payload)
+
 
 class CreateView(MethodView):
 
