@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %} Auctions {% endblock %}
+{% block content %}
+        <div class="container">
+            <form>
+                <fieldset>
+                    <legend>Create An Auction</legend>
+                    <label>Description</label>
+                    <input type="text" placeholder="An auction for what?">
+                    <div class="row">
+                        <div class="span2">
+                            <label>Starting Bid</label>
+                        </div>
+                        <div class="span2 offset1">
+                            <label>Max Bid</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span2">
+                            <input type="text">
+                        </div>
+                        <div class="span2 offset1">
+                            <input type="text">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+{% endblock %}
