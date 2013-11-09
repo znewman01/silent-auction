@@ -54,9 +54,7 @@ class BidView(MethodView):
             auction.current_bid = 1
             first_bidder_key = \
                     auction.bidder_public_keys[0]
-            print('start')
             blob = server.initialize(pickle.loads(first_bidder_key))
-            print('end')
             auction.current_state = pickle.dumps(server.initialize(pickle.loads(first_bidder_key)))
 
         if auction.current_bid < len(auction.bidder_public_keys):
