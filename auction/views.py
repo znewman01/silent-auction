@@ -16,6 +16,21 @@ class ImageView(MethodView):
     def get(self, filename):
         return send_from_directory(get_upload_folder(), filename) # TODO(zjn): attone for my sins
 
+class StatusView(MethodView):
+
+    def get(self, auction_id):
+        auction = Auction.objects.get_or_404(auction_id=auction_id)
+        if auction.current_bid:
+            status = {
+                'started': True,
+                'waiting_on': auction.current_bid
+            }
+        else:
+            status = {
+                'started': False
+            }
+        return json.dumps(status)
+
 class ListView(MethodView):
 
     def get(self):
@@ -109,6 +124,7 @@ class CreateView(MethodView):
         return render_template('create.html', message = 'Auction #{} successfully created'.format(auction_id))
 
 auctions.add_url_rule('/', view_func=ListView.as_view('list'))
+auctions.add_url_rule('/auctions/<int:auction_id>/status', view_func=StatusView.as_view('status')) 
 auctions.add_url_rule('/user_images/<filename>', view_func=ImageView.as_view('image')) 
 auctions.add_url_rule('/auctions/<int:auction_id>/', view_func=DetailView.as_view('detail'))
 auctions.add_url_rule('/auctions/<int:auction_id>/register', view_func=RegisterView.as_view('register'))

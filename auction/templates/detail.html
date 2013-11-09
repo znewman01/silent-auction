@@ -27,11 +27,7 @@
                 <div class="span12">
                     Auction #{{ auction.auction_id }}
                     <br><br>
-                    {% if auction.current_bid %}
-                    <h4>Status: waiting on bidder #{{ auction.current_bid }}</h4>
-                    {% else %}
-                    <h4>This auction has not yet begun.</h4>
-                    {% endif %}
+                    <div id="status">Loading auction status...</div>
                     <br>
                     {% if auction.picture_filename %}
                     <img src="/user_images/{{ auction.picture_filename }}">
@@ -51,4 +47,22 @@ What auction id? {{ auction.auction_id }}
                 </div>
             </div>
         </div>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                window.setInterval(function() {
+                    $.get("/auctions/{{ auction.auction_id }}/status", function(data) {
+                        data = JSON.parse(data);
+                        console.log(data['waiting_on']);
+                        if (data['started']) {
+                            var status = "<h4>Status: Waiting on bidder #" + data['waiting_on'] + "</h4>";
+                            $("#status").html(status);
+                        }
+                        else {
+                            $("#status").html("<h4>This auction has not yet begun.</h4>");
+                        }
+                    });
+                }, 1000);
+            });
+        </script>
 {% endblock %}
