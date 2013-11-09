@@ -1,5 +1,6 @@
 import json
 import pickle
+import random
 
 from flask import Blueprint, request, redirect, render_template, url_for, g
 from flask.views import MethodView
@@ -69,9 +70,8 @@ class BidView(MethodView):
         auction.save()
         if auction.current_bid > len(auction.bidder_public_keys):
             server = auction.get_crypto_server()
-            print(server)
             blob = server.finalize(pickle.loads(blob))
-            print blob
+            auction.current_state = pickle.dumps(blob)
             return str(blob)
         return ''
 
@@ -81,12 +81,19 @@ class CreateView(MethodView):
         return render_template('create.html')
 
     def post(self):
-        # request.getargs: description, picture, max and min prices
-        # convert max and min into list
-        # generate ID
-        # add new auction to DB
-        return 'Auction # successfully created' # need auction number here
-        # should update view to inform of creation
+        bid_range = list(range(int(request.form['startingBid']), int(request.form['maxBid']) + 1))
+        # request.getargs: picture,
+        while True:
+            auction_id = random.randint(1,10**5)
+            if not Auction.objects(auction_id=auction_id):
+                break
+        auction = Auction(name=request.form['name'],
+                account=request.form['account'],
+                description=request.form['description'], auction_id=auction_id,
+                bid_range=bid_range)
+        auction.save()
+        return 'Auction {} successfully created'.format(auction_id)
+        # should redirect to auction page
 
 
 auctions.add_url_rule('/', view_func=ListView.as_view('list'))
