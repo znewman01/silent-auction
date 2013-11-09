@@ -92,7 +92,7 @@ class CreateView(MethodView):
                 description=request.form['description'], auction_id=auction_id,
                 bid_range=bid_range)
         auction.save()
-        return render_template('create.html', message = 'Auction #{} successfully created'.format(auction_id)
+        return render_template('create.html', message = 'Auction #{} successfully created'.format(auction_id))
 
 auctions.add_url_rule('/', view_func=ListView.as_view('list'))
 auctions.add_url_rule('/auctions/<int:auction_id>/', view_func=DetailView.as_view('detail'))
