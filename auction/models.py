@@ -23,13 +23,18 @@ class Auction(db.Document):
     def get_crypto_server(self):
         server = self.auctioneer
         if server is None:
-            server = Server(len(self.bid_range), 4)
-            server.gen_key(2048)
+            print('start')
+            server = Server(len(self.bid_range), 4, key=self.get_key())
+            print('end')
             self.auctioneer = pickle.dumps(server)
             self.save()
         else:
             server = pickle.loads(server)
         return server
+
+    def get_key(self, keyfile='test_keys/server_key'):
+        return pickle.load(open(keyfile))
+
 
 def get_upload_folder():
     return app.config["UPLOAD_FOLDER"]

@@ -1,6 +1,7 @@
 import pickle
 import requests
 import sys
+import argparse
 
 from auction.crypto import User
 
@@ -31,20 +32,22 @@ def bid(server, user, auction_id, server_key):
 
 
 def main():
-    user = User()
-    user.gen_key(4096)
+    parser = argparse.ArgumentParser(description='Place a SilentAuction bid')
+    parser.add_argument('--server', default='localhost:5000')
+    parser.add_argument('--keyfile', default=None)
+    args = parser.parse_args()
 
-    server = 'localhost:5000'
-    if len(sys.argv) == 2:
-        server = sys.argv[1]
+    user = User(key=pickle.load(open(args.keyfile)))
+    if not args.keyfile:
+        user.gen_key(4096)
 
     auction_id = raw_input('What auction id? ')
 
-    server_key, bidder_id = register(server, user, auction_id)
+    server_key, bidder_id = register(args.server, user, auction_id)
 
-    print('Your bidder ID: ', bidder_id)
+    print('Your bidder ID: {}'.format(bidder_id))
 
-    bid(server, user, auction_id, server_key)
+    bid(args.server, user, auction_id, server_key)
 
 if __name__ == '__main__':
     main()

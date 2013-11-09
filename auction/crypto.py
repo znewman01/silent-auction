@@ -92,9 +92,10 @@ class User():
 
 class Server():
 
-    def __init__(self, num_bids, blocks_per_bid=4):
+    def __init__(self, num_bids, blocks_per_bid=4, key=None):
         self.num_bids = num_bids
         self.blocks_per_bid = blocks_per_bid
+        self.key = key
 
     def gen_key(self, key_len=2048):
         self.key = ElGamal.generate(key_len, Random.new().read)
