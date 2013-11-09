@@ -64,7 +64,7 @@ class User():
             ret.append(chunks)
         return ret
 
-    def final_bid(self, blob, value, bid_list, server_key, seller_address):
+    def final_bid(self, blob, value, bid_list, server_key, seller_address, transcation):
         def make_garbage(chunks):
             for chunk in chunks:
                 garbage = random.StrongRandom().randint(1, server_key.p-1)
