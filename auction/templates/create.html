@@ -2,11 +2,25 @@
 {% block title %} Auctions {% endblock %}
 {% block content %}
         <div class="container">
-            <form>
+            <form action="POST">
                 <fieldset>
                     <legend>Create An Auction</legend>
-                    <label>Description</label>
-                    <input type="text" placeholder="An auction for what?">
+                    <div class="row">
+                        <div class="span2">
+                            <label>Description</label>
+                        </div>
+                        <div class="span2 offset1">
+                            <label>BitCoin Address</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span2">
+                            <input type="text" name="auctionName" placeholder="An auction for what?">
+                        </div>
+                        <div class="span2 offset1">
+                            <input type="text" name="account" placeholder="For delivering auction result">
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="span2">
                             <label>Starting Bid</label>
@@ -17,10 +31,10 @@
                     </div>
                     <div class="row">
                         <div class="span2">
-                            <input type="text">
+                            <input name="startingBid" type="text" placeholder="In Bitcoin">
                         </div>
                         <div class="span2 offset1">
-                            <input type="text">
+                            <input name="maxBid" type="text" placeholder="In Bitcoin">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
