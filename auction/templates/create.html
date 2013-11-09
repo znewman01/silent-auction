@@ -8,7 +8,7 @@
                 <strong>Success!</strong> {{message}}  
             </div> 
             {% endif %}
-            <form method="POST">
+            <form action="" method="POST" enctype="multipart/form-data">
                 <fieldset>
                     <legend>Create An Auction</legend>
                     <div class="row">
@@ -47,10 +47,16 @@
                         <div class="span2">
                             <label>Description</label>
                         </div>
+                        <div class="span2 offset1">
+                            <label>Image</label>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="span2">
                             <textarea name="description" placeholder="What is it?"></textarea>
+                        </div>
+                        <div class="span2 offset1">
+                            <input type="file" name="image" />
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>

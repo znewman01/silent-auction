@@ -1,10 +1,12 @@
 import json
+import os
 import pickle
 import random
 
-from flask import Blueprint, request, redirect, render_template, url_for, g
+from flask import Blueprint, request, redirect, render_template, url_for
 from flask.views import MethodView
-from auction.models import Auction
+from auction.models import Auction, get_upload_folder
+from werkzeug import secure_filename
 
 auctions = Blueprint('auctions', __name__, template_folder='templates')
 
@@ -82,7 +84,12 @@ class CreateView(MethodView):
 
     def post(self):
         bid_range = list(range(int(request.form['startingBid']), int(request.form['maxBid']) + 1))
-        # request.getargs: picture,
+        file = request.files['image']
+        full_path = None
+        if file:
+            filename = secure_filename(file.filename)
+            full_path = os.path.join(get_upload_folder(), filename)
+            file.save(full_path)
         while True:
             auction_id = random.randint(1,10**5)
             if not Auction.objects(auction_id=auction_id):
@@ -90,7 +97,7 @@ class CreateView(MethodView):
         auction = Auction(name=request.form['name'],
                 account=request.form['account'],
                 description=request.form['description'], auction_id=auction_id,
-                bid_range=bid_range)
+                bid_range=bid_range, picture_path=full_path)
         auction.save()
         return render_template('create.html', message = 'Auction #{} successfully created'.format(auction_id))
 

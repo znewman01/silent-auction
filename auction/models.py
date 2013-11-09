@@ -1,6 +1,6 @@
 import datetime
 import pickle
-from auction import db
+from auction import db, app
 from flask import g
 from crypto import Server
 
@@ -28,3 +28,6 @@ class Auction(db.Document):
             self.auctioneer = server
         self.save()
         return pickle.loads(server)
+
+def get_upload_folder():
+    return app.config["UPLOAD_FOLDER"]
