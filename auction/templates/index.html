@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %} Auctions {% endblock %}
 {% block head %}
-<style>
 h1 {
     text-align: center;
     text-decoration: underline;
@@ -10,7 +9,6 @@ h1 {
 .span5 {
     text-align: center;
 }
-</style>
 {% endblock %}
 {% block content %}
         <div class="container">
@@ -19,26 +17,32 @@ h1 {
             {% if loop.index % 2 == 1 %}
             <div class="row show-grid">
                 <div class="span5">
+                    <a href="/auctions/{{ auction.auction_id }}">
                     <h3>{{ auction.name }}</h3>
                     {% if auction.picture_filename %}
-                    <img src="/user_images/{{ auction.picture_filename }}" height="50" width="50">
+                    <img src="/user_images/{{ auction.picture_filename }}" height="500" width="500">
                     {% endif %}
+                    </a>
+                    <br>
                     {{ auction.description }}
                 </div>
-            {% if loop.last %}\
+            {% if loop.last %}
             </div>
             {% endif %}
             {% else %}
                 <div class="span5 offset2">
+                    <a href="/auctions/{{ auction.auction_id }}">
                     <h3>{{ auction.name }}</h3>
                     {% if auction.picture_filename %}
-                    <img src="/user_images/{{ auction.picture_filename }}" height="50" width="50">
+                    <img src="/user_images/{{ auction.picture_filename }}" height="250" width="250">
                     {% endif %}
+                    </a>
+                    <br>
                     {{ auction.description }}
                 </div>
             </div>
-            <br><br>
             {% endif %}
+            <br><br>
             {% endfor %}
         </div>
 {% endblock %}

@@ -14,7 +14,7 @@ auctions = Blueprint('auctions', __name__, template_folder='templates')
 class ImageView(MethodView):
 
     def get(self, filename):
-        return send_from_directory(get_upload_folder(), filename)
+        return send_from_directory(get_upload_folder(), filename) # TODO(zjn): attone for my sins
 
 class ListView(MethodView):
 
@@ -111,7 +111,7 @@ class CreateView(MethodView):
         return render_template('create.html', message = 'Auction #{} successfully created'.format(auction_id))
 
 auctions.add_url_rule('/', view_func=ListView.as_view('list'))
-auctions.add_url_rule('/user_images/:filename', view_func=ImageView.as_view('image'))
+auctions.add_url_rule('/user_images/<filename>', view_func=ImageView.as_view('image')) 
 auctions.add_url_rule('/auctions/<int:auction_id>/', view_func=DetailView.as_view('detail'))
 auctions.add_url_rule('/auctions/<int:auction_id>/register', view_func=RegisterView.as_view('register'))
 auctions.add_url_rule('/auctions/<int:auction_id>/bid', view_func=BidView.as_view('bid'))

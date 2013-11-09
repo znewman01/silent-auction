@@ -4,7 +4,7 @@ from flask.ext.mongoengine import MongoEngine
 app = Flask(__name__)
 app.config["MONGODB_SETTINGS"] = {'DB': "auctions_db"}
 app.config["SECRET_KEY"] = "Q0xfC4nGO7"
-app.config["UPLOAD_FOLDER"] = 'img_uploads'
+app.config["UPLOAD_FOLDER"] = '/tmp/img_uploads'
 
 db = MongoEngine(app)
 

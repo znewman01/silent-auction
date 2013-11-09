@@ -5,17 +5,24 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- Bootstrap -->
         <link href="../static/css/bootstrap.css" rel="stylesheet">
+        <style>
+        body {
+            padding-top: 50px;
+        }
         {% block head %}{% endblock %}
+        </style>
     </head>
     <body>
-        <div class="navbar">
+        <div class="navbar navbar-default navbar-fixed-top">
             <div class="navbar-inner">
-                <a class="brand" href="/">Silent Auction</a>
-                <ul class="nav">
-                    <li class="active">
-                        <a href="/auctions/create">Create Auction</a>
-                    </li>
-                </ul>
+                <div class="container-fluid">
+                    <a class="brand" href="/">Silent Auction</a>
+                    <ul class="nav">
+                        <li class="active">
+                            <a href="/auctions/create">Create Auction</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         {% block content %}{% endblock %}
