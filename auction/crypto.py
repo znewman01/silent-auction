@@ -42,8 +42,10 @@ class User():
                 encrypted = encrypt(garbage, server_key)
                 yield encrypt_cipher(encrypted, next_bidder_key)
         def place_bid(chunks, value):
+            # chop value up into chunk-sized pieces
             for chunk in chunks:
-                yield encrypt_cipher(scale(chunk, 0xBEEF), next_bidder_key)
+                # tx_chunk = the resulst of converting this part of the tx to an int
+                yield encrypt_cipher(scale(chunk, tx_chunk), next_bidder_key)
         def pass_through(chunks):
             for chunk in chunks:
                 yield encrypt_cipher(chunk, next_bidder_key)
