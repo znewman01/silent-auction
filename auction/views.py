@@ -56,7 +56,8 @@ class BidView(MethodView):
 
         payload = {
                 'blob': auction.current_state,
-                'bid_values': auction.bid_range
+                'bid_values': auction.bid_range,
+                'seller_address': auction.account
             }
 
         auction.save()

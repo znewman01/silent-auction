@@ -35,7 +35,7 @@ class User():
     def export_key(self):
         return self.key.publickey()
 
-    def bid(self, blob, value, bid_list, server_key, next_bidder_key):
+    def bid(self, blob, value, bid_list, server_key, next_bidder_key, seller_address):
         def make_garbage(chunks):
             for chunk in chunks:
                 garbage = random.StrongRandom().randint(1, server_key.p-1)
@@ -62,7 +62,7 @@ class User():
             ret.append(chunks)
         return ret
 
-    def final_bid(self, blob, value, bid_list, server_key):
+    def final_bid(self, blob, value, bid_list, server_key, seller_address):
         def make_garbage(chunks):
             for chunk in chunks:
                 garbage = random.StrongRandom().randint(1, server_key.p-1)

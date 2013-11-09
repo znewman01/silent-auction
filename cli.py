@@ -17,13 +17,15 @@ def bid(server, user, auction_id, server_key):
     json = r.json()
     next_bidder_key = json.get('next_bidder_key', None)
     bid_values = json.get('bid_values')
+    seller_address = json['seller_address']
     print('Available bid values: {}'.format(bid_values))
     bid = int(raw_input('What is your bid? '))
     blob = pickle.loads(json['blob'])
     if next_bidder_key is not None:
-        blob = user.bid(blob, bid, bid_values, server_key, pickle.loads(next_bidder_key))
+        blob = user.bid(blob, bid, bid_values, server_key,
+                pickle.loads(next_bidder_key), seller_address)
     else:
-        blob = user.final_bid(blob, bid, bid_values, server_key)
+        blob = user.final_bid(blob, bid, bid_values, server_key, seller_address)
     print(requests.post(bid_url, data={'blob': pickle.dumps(blob)}).text)
 
 
