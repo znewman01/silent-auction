@@ -40,15 +40,16 @@
                     {{ auction.description }}
                     <br><br>
                 </div>
+                {% if not auction.current_bid %}
                 <div class="span offset2">
-                    To register for this auction:
-                    <pre>
-$ python cli.py --server [server hostname] --keyfile [pregenerated ElGamal key]
-What Bitcoin address? [public Bitcoin address you're paying from]
-What Bitcoin wif? [private Bitcoin key associated with that address]
-What auction id? {{ auction.auction_id }}
-...</pre>
+                    To register for and bid in this auction, run
+                    <pre>$ python cli.py --server [server hostname] \
+                --keyfile [pregenerated ElGamal key] \
+                --btcfile [bitcoin wallet file] \
+                {{ auction.auction_id }}</pre>
+                    and follow the instructions.
                 </div>
+                {% endif %}
             </div>
         </div>
 {% endblock %}
