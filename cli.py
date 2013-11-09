@@ -2,7 +2,7 @@ import pickle
 import requests
 import sys
 
-from crypto import User
+from auction.crypto import User
 
 def register(server, user, auction_id):
     url = 'http://{}/auctions/{}/register'.format(server, auction_id)
