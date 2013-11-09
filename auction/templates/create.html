@@ -2,6 +2,12 @@
 {% block title %} Auctions {% endblock %}
 {% block content %}
         <div class="container">
+            {% if message %}
+            <div class="alert alert-success">  
+                <a class="close" data-dismiss="alert">×</a>  
+                <strong>Success!</strong> {{message}}  
+            </div> 
+            {% endif %}
             <form method="POST">
                 <fieldset>
                     <legend>Create An Auction</legend>

@@ -85,7 +85,7 @@ class CreateView(MethodView):
         # convert max and min into list
         # generate ID
         # add new auction to DB
-        return 'Auction # successfully created' # need auction number here
+        return render_template('create.html', message = 'Auction # successfully created') # need auction number here
         # should update view to inform of creation
 
 
