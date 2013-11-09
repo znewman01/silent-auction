@@ -33,7 +33,7 @@ def bid(server, user, auction_id, server_key):
 
 def main():
     user = User()
-    user.gen_key(128)
+    user.gen_key(4096)
 
     server = 'localhost:5000'
     if len(sys.argv) == 2:

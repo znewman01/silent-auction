@@ -23,8 +23,8 @@ class Auction(db.Document):
     def get_crypto_server(self):
         server = self.auctioneer
         if server is None:
-            server = Server(len(self.bid_range), 1)
-            server.gen_key(64)
+            server = Server(len(self.bid_range), 4)
+            server.gen_key(2048)
             self.auctioneer = pickle.dumps(server)
             self.save()
         else:
