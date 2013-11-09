@@ -28,16 +28,12 @@ class User():
 
     def __init__(self, key=None):
         self.key = key
-        self.keyring = []
 
     def gen_key(self, key_len=4096):
         self.key = ElGamal.generate(key_len, Random.new().read)
 
     def export_key(self):
         return self.key.publickey()
-
-    def import_key(self, key):
-        self.keyring.append(key)
 
     def bid(self, blob, value, bid_list, server_key, next_bidder_key):
         def make_garbage(chunks):
@@ -98,7 +94,6 @@ class Server():
 
     def __init__(self, num_bids, blocks_per_bid=4):
         self.num_bids = num_bids
-        self.keyring = []
         self.blocks_per_bid = blocks_per_bid
 
     def gen_key(self, key_len=2048):
@@ -106,9 +101,6 @@ class Server():
 
     def export_key(self):
         return self.key.publickey()
-
-    def import_key(self, key):
-        self.keyring.append(key)
 
     def initialize(self, first_bidder_key):
         blob = []
