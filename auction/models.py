@@ -25,9 +25,11 @@ class Auction(db.Document):
         if server is None:
             server = Server(len(self.bid_range), 1)
             server.gen_key(64)
-            self.auctioneer = server
-        self.save()
-        return pickle.loads(server)
+            self.auctioneer = pickle.dumps(server)
+            self.save()
+        else:
+            server = pickle.loads(server)
+        return server
 
 def get_upload_folder():
     return app.config["UPLOAD_FOLDER"]
