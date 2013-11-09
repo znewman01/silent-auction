@@ -1,14 +1,44 @@
 {% extends "base.html" %}
 {% block title %} Auctions {% endblock %}
+{% block head %}
+<style>
+h1 {
+    text-align: center;
+    text-decoration: underline;
+}
+
+.span5 {
+    text-align: center;
+}
+</style>
+{% endblock %}
 {% block content %}
         <div class="container">
+            <h1>Live Auctions</h1>
+            {% for auction in auctions %}
+            {% if loop.index % 2 == 1 %}
             <div class="row show-grid">
-                <div class="span6">
-                    Auction 1
+                <div class="span5">
+                    <h3>{{ auction.name }}</h3>
+                    {% if auction.picture_filename %}
+                    <img src="/user_images/{{ auction.picture_filename }}" height="50" width="50">
+                    {% endif %}
+                    {{ auction.description }}
                 </div>
-                <div class="span6">
-                    Auction 2
+            {% if loop.last %}\
+            </div>
+            {% endif %}
+            {% else %}
+                <div class="span5 offset2">
+                    <h3>{{ auction.name }}</h3>
+                    {% if auction.picture_filename %}
+                    <img src="/user_images/{{ auction.picture_filename }}" height="50" width="50">
+                    {% endif %}
+                    {{ auction.description }}
                 </div>
             </div>
+            <br><br>
+            {% endif %}
+            {% endfor %}
         </div>
 {% endblock %}

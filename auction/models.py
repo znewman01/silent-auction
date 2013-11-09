@@ -9,7 +9,7 @@ class Auction(db.Document):
     description = db.StringField(required=True)
     account = db.StringField(required=True)
     auction_id = db.IntField(required=True)
-    picture_path = db.StringField(required=False)
+    picture_filename = db.StringField(required=False)
     bid_range = db.ListField(required=True)
 
     auctioneer = db.StringField(required=False)
