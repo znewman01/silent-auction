@@ -77,19 +77,21 @@ def main():
     parser = argparse.ArgumentParser(description='Place a SilentAuction bid')
     parser.add_argument('--server', default='localhost:5000')
     parser.add_argument('--keyfile', default=None)
+    parser.add_argument('--btcfile')
+    parser.add_argument('auction_id')
     args = parser.parse_args()
 
     user = User(key=pickle.load(open(args.keyfile)))
     if not args.keyfile:
         user.gen_key(4096)
-    bitcoin_address = raw_input('What Bitcoin address?')
-    bitcoin_wif = raw_input('What Bitcoin wif?');
 
-    server = 'localhost:5000'
-    if len(sys.argv) == 2:
-        server = sys.argv[1]
+    if args.btcfile:
+        bitcoin_address, bitcoin_wif = open(args.btcfile).read().split(',')
+    else:
+        bitcoin_address = raw_input('What Bitcoin address? ')
+        bitcoin_wif = raw_input('What Bitcoin WIF? ');
 
-    auction_id = raw_input('What auction id? ')
+    auction_id = args.auction_id or raw_input('What auction id? ')
 
     server_key, bidder_id = register(args.server, user, auction_id)
 
